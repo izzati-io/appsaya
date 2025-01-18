@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Membaca Quran</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f8ff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #0077b6;
+    }
+
+    form {
+      background: #eaf4ff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #0077b6;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005f99;
+    }
+
+    .actions button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .actions button.edit {
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .actions button.edit:hover {
+      background: #218838;
+    }
+
+    .actions button.delete {
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .actions button.delete:hover {
+      background: #c82333;
+    }
+
+    .options {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .options button {
+      margin-left: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #0077b6;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Monitoring Membaca Quran</h1>
+
+    <!-- Form Tambah/Edit Data -->
+    <form id="entryForm">
+      <input type="hidden" id="editIndex" value="">
+      <label for="surah">Surah:</label>
+      <input type="text" id="surah" placeholder="Nama Surah" required>
+
+      <label for="ayat">Ayat:</label>
+      <input type="number" id="ayat" placeholder="Ayat terakhir dibaca" required>
+
+      <label for="tanggal">Tanggal:</label>
+      <input type="date" id="tanggal" required>
+
+      <button type="submit" id="saveButton">Simpan</button>
+    </form>
+
+    <!-- Tabel Data -->
+    <h2>Riwayat Membaca</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Surah</th>
+          <th>Ayat</th>
+          <th>Tanggal</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable"></tbody>
+    </table>
+
+    <!-- Tombol Bagikan dan Kirim -->
+    <div class="options">
+      <button onclick="shareData()">Bagikan</button>
+      <button onclick="sendData()">Kirim Isi Data</button>
+    </div>
+  </div>
+
+  <script>
+    let data = JSON.parse(localStorage.getItem('quranData')) || [];
+
+    const form = document.getElementById('entryForm');
+    const surahInput = document.getElementById('surah');
+    const ayatInput = document.getElementById('ayat');
+    const tanggalInput = document.getElementById('tanggal');
+    const dataTable = document.getElementById('dataTable');
+    const editIndexInput = document.getElementById('editIndex');
+
+    function renderTable() {
+      dataTable.innerHTML = '';
+      data.forEach((item, index) => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${data.length - index}</td>
+          <td>${item.surah}</td>
+          <td>${item.ayat}</td>
+          <td>${item.tanggal}</td>
+          <td class="actions">
+            <button class="edit" onclick="editData(${index})">Edit</button>
+            <button class="delete" onclick="deleteData(${index})">Hapus</button>
+          </td>
+        `;
+        dataTable.prepend(row);
+      });
+    }
+
+    function saveData() {
+      const surah = surahInput.value;
+      const ayat = ayatInput.value;
+      const tanggal = tanggalInput.value;
+      const editIndex = editIndexInput.value;
+
+      if (editIndex === '') {
+        data.unshift({ surah, ayat, tanggal });
+      } else {
+        data[editIndex] = { surah, ayat, tanggal };
+        editIndexInput.value = '';
+      }
+
+      localStorage.setItem('quranData', JSON.stringify(data));
+      renderTable();
+      form.reset();
+    }
+
+    function editData(index) {
+      const item = data[index];
+      surahInput.value = item.surah;
+      ayatInput.value = item.ayat;
+      tanggalInput.value = item.tanggal;
+      editIndexInput.value = index;
+    }
+
+    function deleteData(index) {
+      data.splice(index, 1);
+      localStorage.setItem('quranData', JSON.stringify(data));
+      renderTable();
+    }
+
+    function shareData() {
+      const shareText = data.map((item, index) => 
+        `No: ${index + 1}, Surah: ${item.surah}, Ayat: ${item.ayat}, Tanggal: ${item.tanggal}`
+      ).join('\n');
+
+      if (navigator.share) {
+        navigator.share({
+          title: 'Riwayat Membaca Quran',
+          text: shareText
+        }).catch(console.error);
+      } else {
+        alert('Fitur bagikan tidak didukung pada browser ini.');
+      }
+    }
+
+    function sendData() {
+      const dataText = data.map((item, index) => 
+        `No: ${data.length - index}\nSurah: ${item.surah}\nAyat: ${item.ayat}\nTanggal: ${item.tanggal}`
+      ).join('\n\n');
+
+      if (navigator.share) {
+        navigator.share({
+          title: 'Kirim Isi Data Membaca Quran',
+          text: dataText
+        }).catch(console.error);
+      } else {
+        alert('Fitur kirim data tidak didukung pada browser ini.');
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      saveData();
+    });
+
+    renderTable();
+  </script>
+</body>
+</html>
