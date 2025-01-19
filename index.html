@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Membaca Quran</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f8ff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #0077b6;
+    }
+
+    form {
+      background: #eaf4ff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #0077b6;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005f99;
+    }
+
+    .actions button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .actions button.edit {
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .actions button.edit:hover {
+      background: #218838;
+    }
+
+    .actions button.delete {
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .actions button.delete:hover {
+      background: #c82333;
+    }
+
+    .options {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .options button {
+      margin-left: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #0077b6;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Monitoring Membaca Quran</h1>
+
+    <!-- Form Tambah/Edit Data -->
+    <form id="entryForm">
+      <input type="hidden" id="editIndex" value="">
+      <label for="surah">Surah:</label>
+      <select id="surah" required>
+        <option value="">Pilih Surah</option>
+        <option value="Al-Fatiha">Al-Fatiha</option>
+        <option value="Al-Baqarah">Al-Baqarah</option>
+        <option value="Aali Imran">Aali Imran</option>
+        <option value="An-Nisa">An-Nisa</option>
+        <option value="Al-Ma'idah">Al-Ma'idah</option>
+        <option value="Al-An'am">Al-An'am</option>
+        <option value="Al-A'raf">Al-A'raf</option>
+        <option value="Al-Anfal">Al-Anfal</option>
+        <option value="At-Tawbah">At-Tawbah</option>
+        <option value="Yunus">Yunus</option>
+        <option value="Hud">Hud</option>
+        <option value="Yusuf">Yusuf</option>
+        <option value="Ibrahim">Ibrahim</option>
+        <option value="Al-Hijr">Al-Hijr</option>
+        <option value="An-Nahl">An-Nahl</option>
+        <option value="Al-Isra">Al-Isra</option>
+        <option value="Al-Kahf">Al-Kahf</option>
+        <option value="Maryam">Maryam</option>
+        <option value="Ta-Ha">Ta-Ha</option>
+        <option value="Al-Anbiya">Al-Anbiya</option>
+        <option value="Al-Hajj">Al-Hajj</option>
+        <option value="Al-Furqan">Al-Furqan</option>
+        <option value="An-Naml">An-Naml</option>
+        <option value="Al-Azhab">Al-Azhab</option>
+        <option value="Ya-Sin">Ya-Sin</option>
+        <option value="Az-Zumar">Az-Zumar</option>
+        <option value="Fussilat">Fussilat</option>
+        <option value="Al-Ahqaf">Al-Ahqaf</option>
+        <option value="Muhammad">Muhammad</option>
+        <option value="Al-Fath">Al-Fath</option>
+        <option value="Al-Hujurat">Al-Hujurat</option>
+        <option value="Qamar">Qamar</option>
+        <option value="Ar-Rahman">Ar-Rahman</option>
+        <option value="Al-Waqi'ah">Al-Waqi'ah</option>
+        <option value="Al-Mulk">Al-Mulk</option>
+        <option value="Al-Qalam">Al-Qalam</option>
+        <option value="Al-Muzzammil">Al-Muzzammil</option>
+        <option value="Al-Muddathir">Al-Muddathir</option>
+        <option value="Al-Qiyamah">Al-Qiyamah</option>
+        <option value="Al-Insan">Al-Insan</option>
+        <option value="Al-Mursalat">Al-Mursalat</option>
+        <option value="An-Naba">An-Naba</option>
+        <option value="An-Nazi'at">An-Nazi'at</option>
+        <option value="Abasa">Abasa</option>
+        <option value="At-Takwir">At-Takwir</option>
+        <option value="Al-Infitar">Al-Infitar</option>
+        <option value="Al-Mutaffifin">Al-Mutaffifin</option>
+        <option value="Al-Inshiqaq">Al-Inshiqaq</option>
+        <option value="Al-Buruj">Al-Buruj</option>
+        <option value="At-Tariq">At-Tariq</option>
+        <option value="Al-A'la">Al-A'la</option>
+        <option value="Al-Ghashiyah">Al-Ghashiyah</option>
+        <option value="Al-Fajr">Al-Fajr</option>
+        <option value="Al-Balad">Al-Balad</option>
+        <option value="Ash-Shams">Ash-Shams</option>
+        <option value="Al-Lail">Al-Lail</option>
+        <option value="Adh-Dhuha">Adh-Dhuha</option>
+        <option value="Ash-Sharh">Ash-Sharh</option>
+        <option value="At-Tin">At-Tin</option>
+        <option value="Al-Alaq">Al-Alaq</option>
+        <option value="Al-Qadr">Al-Qadr</option>
+        <option value="Al-Bayyina">Al-Bayyina</option>
+        <option value="Az-Zalzalah">Az-Zalzalah</option>
+        <option value="Al-Adiyat">Al-Adiyat</option>
+        <option value="Al-Qari'ah">Al-Qari'ah</option>
+        <option value="At-Takathur">At-Takathur</option>
+        <option value="Al-Asr">Al-Asr</option>
+        <option value="Al-Humazah">Al-Humazah</option>
+        <option value="Al-Fil">Al-Fil</option>
+        <option value="Quraish">Quraish</option>
+        <option value="Al-Ma'un">Al-Ma'un</option>
+        <option value="Al-Kawthar">Al-Kawthar</option>
+        <option value="Al-Kafirun">Al-Kafirun</option>
+        <option value="An-Nasr">An-Nasr</option>
+        <option value="Al-Masad">Al-Masad</option>
+        <option value="Al-Ikhlas">Al-Ikhlas</option>
+        <option value="Al-Falaq">Al-Falaq</option>
+        <option value="An-Nas">An-Nas</option>
+      </select>
+
+      <label for="ayat">Ayat:</label>
+      <input type="number" id="ayat" placeholder="Ayat terakhir dibaca" required>
+
+      <label for="tanggal">Tanggal:</label>
+      <input type="date" id="tanggal" required>
+
+      <button type="submit" id="saveButton">Simpan</button>
+    </form>
+
+    <!-- Tabel Data -->
+    <h2>Riwayat Membaca</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Surah</th>
+          <th>Ayat</th>
+          <th>Tanggal</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable"></tbody>
+    </table>
+
+    <!-- Tombol Bagikan dan Kirim -->
+    <div class="options">
+      <button onclick="shareData()">Bagikan</button>
+      <button onclick="sendData()">Kirim Isi Data</button>
+    </div>
+  </div>
+
+  <script>
+    let data = JSON.parse(localStorage.getItem('quranData')) || [];
+
+    const form = document.getElementById('entryForm');
+    const surahInput = document.getElementById('surah');
+    const ayatInput = document.getElementById('ayat');
+    const tanggalInput = document.getElementById('tanggal');
+    const dataTable = document.getElementById('dataTable');
+    const editIndexInput = document.getElementById('editIndex');
+
+    function renderTable() {
+      dataTable.innerHTML = '';
+      data.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${data.length - index}</td>
+          <td>${item.surah}</td>
+          <td>${item.ayat}</td>
+          <td>${item.tanggal}</td>
+          <td class="actions">
+            <button class="edit" onclick="editData(${index})">Edit</button>
+            <button class="delete" onclick="deleteData(${index})">Hapus</button>
+          </td>
+        `;
+        dataTable.prepend(row);
+      });
+    }
+
+    function saveData() {
+      const surah = surahInput.value;
+      const ayat = ayatInput.value;
+      const tanggal = tanggalInput.value;
+      const editIndex = editIndexInput.value;
+
+      if (surah === '' || ayat === '' || tanggal === '') {
+        alert('Semua kolom harus diisi.');
+        return;
+      }
+
+      if (editIndex === '') {
+        data.unshift({ surah, ayat, tanggal });
+      } else {
+        data[editIndex] = { surah, ayat, tanggal };
+        editIndexInput.value = '';
+      }
+
+      localStorage.setItem('quranData', JSON.stringify(data));
+      renderTable();
+      form.reset();
+    }
+
+    function editData(index) {
+      const item = data[index];
+      surahInput.value = item.surah;
+      ayatInput.value = item.ayat;
+      tanggalInput.value = item.tanggal;
+      editIndexInput.value = index;
+    }
+
+    function deleteData(index) {
+      data.splice(index, 1);
+      localStorage.setItem('quranData', JSON.stringify(data));
+      renderTable();
+    }
+
+    function shareData() {
+      const shareText = data.map((item, index) =>
+        `No: ${index + 1}, Surah: ${item.surah}, Ayat: ${item.ayat}, Tanggal: ${item.tanggal}`
+      ).join('\n');
+
+      if (navigator.share) {
+        navigator.share({
+          title: 'Riwayat Membaca Quran',
+          text: shareText
+        }).catch(console.error);
+      } else {
+        alert('Fitur bagikan tidak didukung pada browser ini.');
+      }
+    }
+
+    function sendData() {
+      const sendText = data.map((item, index) =>
+        `No: ${index + 1}, Surah: ${item.surah}, Ayat: ${item.ayat}, Tanggal: ${item.tanggal}`
+      ).join('\n');
+
+      const phoneNumber = prompt("Masukkan nomor WhatsApp penerima:");
+      if (phoneNumber) {
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(sendText)}`;
+        window.open(url, '_blank');
+      }
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      saveData();
+    });
+
+    renderTable();
+  </script>
+</body>
+</html>
